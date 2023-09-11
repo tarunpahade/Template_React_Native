@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Padding, Border, Color } from "../GlobalStyles";
 
 const Dashboard = () => {
-  const navigation = useNavigation();
+  const navigation:any = useNavigation();
 
   return (
     <View style={styles.dashboard}>
@@ -28,7 +28,6 @@ const Dashboard = () => {
           source={require("../assets/image-171.png")}
         />
       </View>
-      <StatusBar style={styles.statusPosition} barStyle="default" />
       <View style={styles.myPlanParent}>
         <View style={styles.myPlan}>
           <Text style={styles.myPlan1Typo}>My Plan</Text>
@@ -36,7 +35,7 @@ const Dashboard = () => {
             <TouchableOpacity
               style={[styles.groupParent, styles.groupLayout]}
               activeOpacity={0.2}
-              onPress={() => navigation.navigate("Training")}
+              onPress={()=>{navigation.navigate('Home')}}
             >
               <Image
                 style={styles.frameLayout1}
@@ -44,8 +43,8 @@ const Dashboard = () => {
                 source={require("../assets/group-454.png")}
               />
               <View style={styles.workoutParent}>
-                <Text style={[styles.workout, styles.letsGoTypo]}>Workout</Text>
-                <Text style={[styles.hours, styles.hoursTypo]}>2 hours</Text>
+                <Text style={[styles.workout,{color:'#fff'}, styles.letsGoTypo]}>Workout</Text>
+                <Text style={[styles.hours,styles.hoursTypo,{color:'#fff'},]}>2 hours</Text>
               </View>
             </TouchableOpacity>
             <View style={[styles.groupContainer, styles.containerBorder]}>
@@ -74,15 +73,17 @@ const Dashboard = () => {
                 source={require("../assets/group-459.png")}
               />
             </View>
-            <View style={[styles.frameWrapper, styles.frameLayout]}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('Training')}} style={[styles.frameWrapper, styles.frameLayout]}>
               <View style={styles.letsGoParent}>
                 <Text style={[styles.letsGo, styles.letsGoTypo]}>Let’s Go</Text>
                 <View style={styles.rectangleView} />
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.weeklyStats}>
+        </View>
+
+        {/* <View style={[styles.weeklyStats,{width:' 100%',marginRight:'2%'}]}>
           <Text style={[styles.weeklyStats1, styles.myPlan1Typo]}>
             Weekly Stats
           </Text>
@@ -107,8 +108,7 @@ const Dashboard = () => {
             </View>
             <View style={[styles.lineView, styles.lineViewBorder]} />
           </View>
-        </View>
-      </View>
+        </View> */}
     </View>
   );
 };
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   iconLayout: {
-    height: 24,
-    width: 24,
+    height: 20,
+    width: 20,
   },
   statusPosition: {
     top: 0,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderTopRightRadius: Border.br_5xs,
     borderTopLeftRadius: Border.br_5xs,
-    width: 24,
+    width: 22,
   },
   lineViewBorder: {
     borderColor: Color.colorBlack,
@@ -218,8 +218,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.droidSans,
   },
   image171Icon: {
-    top: 26,
-    left: 196,
+    top: 24,
+    left: 155,
     position: "absolute",
   },
   header: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
   groupParent: {
-    width: 209,
+    width: '58%',
     paddingHorizontal: Padding.p_xs,
     backgroundColor: Color.colorPlum,
     paddingTop: Padding.p_xs,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_xs,
   },
   groupContainer: {
-    width: 118,
+    width: '33%',
     marginLeft: 16,
     paddingTop: Padding.p_xs,
     height: 116,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     marginLeft: 61,
   },
   frameContainer: {
-    width: 173,
+    width: '58%',
     borderWidth: 1,
     borderColor: Color.colorGray_200,
     borderStyle: "solid",
@@ -286,15 +286,15 @@ const styles = StyleSheet.create({
   },
   frameWrapper: {
     backgroundColor: Color.colorGray_200,
-    width: 155,
-    paddingHorizontal: 42,
+    width: '33%',
+    paddingHorizontal: 20,
     alignItems: "flex-end",
     justifyContent: "center",
     marginLeft: 16,
   },
   myPlan: {
-    height: 243,
-    width: 344,
+    height: '45%',
+    width: '100%',
   },
   weeklyStats1: {
     letterSpacing: 0.4,
@@ -468,8 +468,8 @@ const styles = StyleSheet.create({
   dashboard: {
     backgroundColor: Color.colorWhite,
     flex: 1,
-    width: "100%",
-    height: 812,
+    width: '100%',
+    height: '100%',
     overflow: "hidden",
   },
 });

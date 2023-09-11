@@ -125,7 +125,6 @@ const Training = () => {
           </View>
         </View>
       </View>
-      <StatusBar style={styles.statusPosition} barStyle="default" />
     </View>
   );
 };
