@@ -9,15 +9,24 @@ import {
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Padding, Border, Color } from "../GlobalStyles";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const navigation:any = useNavigation();
+  const profileData = useSelector((state:any) => state.account);
+const email=  profileData.account.email
+const emailText = profileData.account.email;
+const words = emailText.split(' ');
+const truncatedText = words.slice(0, 5).join(' ');
+console.log(truncatedText,truncatedText );
+
+  console.log(email.split(' ').slice(0, 5).join(' '));
 
   return (
     <View style={styles.dashboard}>
       <View style={styles.header}>
         <Text style={[styles.helloKakashi, styles.helloKakashiTypo]}>
-          Hello, Kakashi
+          Hello, User
         </Text>
         <Text style={[styles.everydayWereMusclen, styles.friTypo]}>
           EVERYDAY WE’RE MUSCLE’N
@@ -53,12 +62,12 @@ const Dashboard = () => {
                 contentFit="cover"
                 source={require("../assets/group-456.png")}
               />
-              <View style={styles.workoutParent}>
+              <TouchableOpacity onPress={()=>{navigation.navigate('Meditate')}} style={styles.workoutParent} >
                 <Text style={[styles.workout, styles.letsGoTypo]}>
                   Meditate
                 </Text>
                 <Text style={[styles.hours, styles.hoursTypo]}>2 hours</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.frameParent}>
@@ -219,8 +228,8 @@ const styles = StyleSheet.create({
   },
   image171Icon: {
     top: 24,
-    left: 155,
-    position: "absolute",
+    left: 165,
+    position: "relative",
   },
   header: {
     top: 68,

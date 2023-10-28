@@ -1,11 +1,21 @@
 import * as React from "react";
-import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable, FlatList, LogBox, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, FlatList, ActivityIndicator, Touchable, TouchableOpacity, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Color, Border, Padding, FontSize } from "./Styles";
+import { Color, Border, Padding, FontSize, FontFamily } from "./Styles";
 import ExerciseTitle from "../../components/exercise/ExerciseCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import DropdownFilter from "../../components/exercise/DropDown";
+
+const data = ["abductors", "abs", "adductors", "biceps", "calves", "cardiovascular system", "delts", "forearms", "glutes", "hamstrings", "lats", "levator scapulae", "pectorals", "quads", "serratus anterior", "spine", "traps", "triceps", "upper back"]
+const categories = {
+  back: ["spine", "upper back", "lats","levator scapulae"],
+  bicep: ["biceps","forearms"],
+  tricep: ["triceps"],
+  shoulder: ["delts", "pectorals"],
+  legs: ["abductors", "adductors", "calves", "hamstrings", "quads","glutes"],
+  chest: ["abs", "cardiovascular system", "serratus anterior"]
+};
 
 interface Exercise {
   bodyPart: string;
@@ -19,7 +29,7 @@ interface Exercise {
 
 
 const ExercisePage = ({ route }: any) => {
-  const [exerciseData, setexerciseData]=useState<Exercise[]>([{
+  const [exerciseData, setexerciseData] = useState<Exercise[]>([{
     bodyPart: "upper legs",
     equipment: "assisted",
     gifUrl: "https://api.exercisedb.io/image/Wlbr0vnryIIhFL",
@@ -27,18 +37,37 @@ const ExercisePage = ({ route }: any) => {
     name: "assisted prone hamstring",
     target: "hamstrings",
   }])
-  const [imageUrl, setImageUrl] = useState('"https://api.exercisedb.io/image/Wlbr0vnryIIhFL')
+  const [main, setMain] = useState<Exercise[]>([{
+    bodyPart: "upper legs",
+    equipment: "assisted",
+    gifUrl: "https://api.exercisedb.io/image/Wlbr0vnryIIhFL",
+    id: "0016",
+    name: "assisted prone hamstring",
+    target: "hamstrings",
+  }])
   const [loading, setloading] = useState(true)
   const { exercise } = route.params;
-  const [header,setHeader]=useState(exercise)
-  console.log(exercise);
+  const [selectedOption, setSelectedOption] = useState<string>('All');
+  const [search, setsearch] = useState('')
+  const handleFilter = (option: string) => {
+    setSelectedOption(option);
+    if (option === 'All') {
+      // If 'All' is selected, show all exercises
+      setexerciseData(exerciseData);
+    } else {
+      // Filter exercises based on the selected option
+      const filteredExercises = exerciseData.filter((exercise: { equipment: string; }) => exercise.equipment === option);
+      setexerciseData(filteredExercises);
+    }
+  };
+
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://exercisedb.p.rapidapi.com/exercises/target/` + exercise, {
-          params: {
-            limit: 50, // Specify the number of exercises you want (in this case, 50)
-          },
+        const response = await axios.get(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/` + exercise, {
+
           headers: {
             'X-RapidAPI-Key': '790e55a731msha0db3ffc5116a62p146a50jsna4961ac7f0e6',
             'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
@@ -46,7 +75,10 @@ const ExercisePage = ({ route }: any) => {
         });
         console.log(response.data.length);
         setexerciseData(response.data)
-        setImageUrl(response.data[0].gifUrl)
+        setMain(response.data)
+        // setImageUrl(response.data[0].gifUrl)
+        // console.log(response.data[0]);
+
         setloading(false)
       } catch (error) {
         console.error(error);
@@ -55,9 +87,6 @@ const ExercisePage = ({ route }: any) => {
 
     fetchData();
   }, []);
-  const capitalizeFirstLetter = (str:string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
   if (loading) {
     return (
@@ -66,6 +95,12 @@ const ExercisePage = ({ route }: any) => {
       </View>
     );
   }
+  const filterExerciseData = () => {
+    const filteredData = main.filter((exercise) =>
+      exercise.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setexerciseData(filteredData);
+  };
   return (
     <LinearGradient
       style={styles.exercisePage}
@@ -73,9 +108,19 @@ const ExercisePage = ({ route }: any) => {
       colors={["rgba(255, 177, 132, 0.6)", "rgba(215, 159, 129, 0.6)"]}
     >
       <View style={{backgroundColor:'#fff'}}>
+      <TextInput
+        style={[styles.searchBar, styles.barFlexBox]}
+        placeholder="Search"
+        placeholderTextColor="#c4c4c4"
+      value={search}
+      onChangeText={(text) => {
+        setsearch(text);
+        filterExerciseData();
+      }}
+      />
       <Text style={[styles.exercises, styles.warmUpFlexBox]}>Exercises</Text>
       <View style={{
-        top: 60,
+        top: 76,
 
         right: 16,
         position: "absolute"
@@ -84,20 +129,19 @@ const ExercisePage = ({ route }: any) => {
         <DropdownFilter handleFilter={handleFilter} selectedOption={selectedOption} />
 
       </View>
-        <Text style={[styles.exercises, styles.warmUpFlexBox]}>Exercises</Text>
 
-        <View style={styles.container}>
-          <FlatList
-            data={exerciseData}
-            renderItem={({ item }) => {
-              return <ExerciseTitle  name={item.name} gifUrl={item.gifUrl} setImageUrl={setImageUrl} setHeader={setHeader}   ></ExerciseTitle>;
-            }}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
+      <View style={styles.container}>
+        <FlatList
+          data={exerciseData}
+          renderItem={({ item }) => {
+            return <ExerciseTitle dataObj={item}  fromRoutiene={false}></ExerciseTitle>;
+          }}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
+    </View>
 
-    </LinearGradient>
+    </LinearGradient >
   );
 };
 
@@ -110,8 +154,8 @@ const styles = StyleSheet.create({
     // flex: 1, // Ensure the container takes up the entire available space
 
     position: 'relative',
-    marginTop: 209,
-    height: '35%',
+    marginTop: 109,
+    height: '95%',
     marginLeft: 10
   },
   warmUpFlexBox: {
@@ -124,7 +168,7 @@ const styles = StyleSheet.create({
   },
   minsTypo: {
     marginLeft: 12,
-    fontSize: 15,
+    fontSize: 12,
     textAlign: "left",
     fontWeight: "700",
   },
@@ -167,16 +211,35 @@ const styles = StyleSheet.create({
   mainImageIcon: {
     top: 0,
     width: '100%',
-    height: '50%',
+    height: '43%',
+    paddingTop: 10
   },
   exercises: {
-    top: 183,
-    fontSize: 18,
+    top: 83,
+    fontSize: 19,
     width: 95,
     height: 25,
     fontWeight: "700",
     color: Color.colorGray,
     left: 19,
+    position: "absolute",
+  },
+  
+  searchBar: {
+    marginLeft: -187,
+    top: 33,
+    left: 200,
+    backgroundColor: "#f5f5f5",
+    height: 40,
+    paddingHorizontal: 30,
+    paddingVertical: 0,
+    alignItems: "center",
+  borderRadius:12,
+    fontSize: FontSize.size_base,
+    width: "90%",
+  },
+  barFlexBox: {
+    flexDirection: "row",
     position: "absolute",
   },
   iconRunning: {
@@ -188,10 +251,21 @@ const styles = StyleSheet.create({
     color: Color.colorCoral,
   },
   statusDuration: {
-    left: 173,
+    left: 163,
     backgroundColor: Color.colorAntiquewhite_200,
     paddingVertical: Padding.p_5xs,
     paddingHorizontal: Padding.p_base,
+    flexDirection: "row",
+    borderRadius: Border.br_8xs,
+    top: 125,
+
+    alignItems: "center",
+  },
+  statusDuration3: {
+    left: 193,
+    backgroundColor: Color.colorAntiquewhite_100,
+    paddingVertical: Padding.p_5xs,
+    paddingHorizontal: Padding.p_5xs,
     flexDirection: "row",
     borderRadius: Border.br_8xs,
     top: 125,
@@ -334,7 +408,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
   content: {
-    top: '37%',
+    top: '42%',
     borderTopLeftRadius: Border.br_mini,
     borderTopRightRadius: Border.br_mini,
     backgroundColor: "#fff",

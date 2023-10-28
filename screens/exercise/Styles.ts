@@ -23,7 +23,7 @@ export const FontFamily = {
   };
   /* Paddings */
   export const Padding = {
-    p_base: 16,
+    p_base: 14,
     p_5xs: 8,
   };
   /* border radiuses */

@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/core';
 const Exercise = () => {
 
   const [exerciseData, setExerciseData] = useState(['']);
-  const navigation:any = useNavigation();
-  const capitalizeFirstLetter = (str:string) => {
+  const navigation: any = useNavigation();
+  const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
   useEffect(() => {
@@ -22,18 +22,30 @@ const Exercise = () => {
             'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
           }
         };
-    //    const response = await axios.get('https://exercisedb.p.rapidapi.com/exercises/targetList', {
+        //    const response = await axios.get('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', {
         //   headers: {
         //     'X-RapidAPI-Key': '790e55a731msha0db3ffc5116a62p146a50jsna4961ac7f0e6',
         //     'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
         //   },
         // });
-
-        const data=["abductors", "abs", "adductors", "biceps", "calves", "cardiovascular system", "delts", "forearms", "glutes", "hamstrings", "lats", "levator scapulae", "pectorals", "quads", "serratus anterior", "spine", "traps", "triceps", "upper back"]
+        const data2 = [
+          "back",
+          "cardio",
+          "chest",
+          "lower arms",
+          "lower legs",
+          "neck",
+          "shoulders",
+          "upper arms",
+          "upper legs",
+          "waist",
+        ]
+        const data = ["abductors", "abs", "adductors", "biceps", "calves", "cardiovascular system", "delts", "forearms", "glutes", "hamstrings", "lats", "levator scapulae", "pectorals", "quads", "serratus anterior", "spine", "traps", "triceps", "upper back"]
         const stringsToRemove = ["serratus anterior", "levator scapulae", "cardiovascular system", "adductors"];
 
-        const filteredData = data.filter((item:any) => !stringsToRemove.includes(item));
-        setExerciseData(filteredData);
+        const filteredData = data.filter((item: any) => !stringsToRemove.includes(item));
+        setExerciseData(data2);
+        
         // const biceps = response.data.filter((x: any) => x.target === 'biceps')
         // setbicep(biceps)
         // const triceps = response.data.filter((x: any) => x.target === 'triceps')
@@ -48,7 +60,7 @@ const Exercise = () => {
   }, []);
 
   const renderItem = ({ item }: any) => (
-    <TouchableOpacity onPress={()=>navigation.navigate('ExerciseDetails',{exercise:item})} style={styles.groupParent} activeOpacity={0.2}>
+    <TouchableOpacity onPress={() => navigation.navigate('ExerciseDetails', { exercise: item })} style={styles.groupParent} activeOpacity={0.2}>
       <View style={styles.frameLayout}>
         <Image style={styles.frameLayout1} source={require("../assets/group-454.png")} />
         <Text style={[styles.letsGoTypo, styles.workout]}>{capitalizeFirstLetter(item)}</Text>
@@ -80,7 +92,7 @@ const Exercise = () => {
 
 const styles = StyleSheet.create({
   categories1: {
-    textAlign:'center',
+    textAlign: 'center',
     fontSize: FontSize.size_xl,
     fontWeight: "700",
     fontFamily: FontFamily.interBold,
@@ -106,13 +118,13 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     flex: 1,
     paddingHorizontal: 5,
-    textAlign:'center'
+    textAlign: 'center'
   },
   frameLayout: {
     flexDirection: 'column',
     alignItems: 'center', // Center the items vertically
     paddingVertical: 0, // Remove padding
-    textAlign:'center'
+    textAlign: 'center'
 
   },
   frameLayout1: {
@@ -130,7 +142,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.droidSans,
     fontWeight: "400",
     padding: 3,
-    textAlign:'center'
+    textAlign: 'center'
 
   },
   hoursTypo: {
