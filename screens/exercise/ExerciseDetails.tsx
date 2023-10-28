@@ -72,48 +72,18 @@ const ExercisePage = ({ route }: any) => {
       locations={[0, 1]}
       colors={["rgba(255, 177, 132, 0.6)", "rgba(215, 159, 129, 0.6)"]}
     >
-      <Image
-        style={styles.menuIcon}
-        contentFit="cover"
-        source={require("../../assets/menu.png")}
-      />
-      <Image
-        style={[styles.mainImageIcon, styles.contentPosition]}
-        contentFit="cover"
-        source={{ uri: imageUrl }}
-      />
-      <Image
-        style={[styles.menuIcon1, styles.menuIcon1Layout]}
-        contentFit="cover"
-        source={require("../../assets/menu1.png")}
-      />
-      <View style={[styles.content, styles.contentPosition]}>
-        <View style={[styles.statusDuration, styles.statusFlexBox]}>
-          <Image
-            style={styles.iconRunning}
-            contentFit="cover"
-            source={require("../../assets/icon--running.png")}
-          />
-          <Text style={[styles.running, styles.minsTypo]}>Running</Text>
-        </View>
-        <View style={[styles.statusDuration1, styles.statusFlexBox]}>
-          <Image
-            style={styles.iconRunning}
-            contentFit="cover"
-            source={require("../../assets/icon--clock.png")}
-          />
-          <Text style={[styles.mins, styles.minsTypo]}>10.00 mins</Text>
-        </View>
-        <View style={[styles.dragOverlayPrototyping, styles.statusFlexBox]}>
-          <View style={styles.dragOverlayPrototypingChild} />
-        </View>
-        <View style={[styles.tagline, styles.taglinePosition]}>
-          <Text style={[styles.warmUp, styles.warmUpFlexBox]}>{capitalizeFirstLetter(header)}</Text>
-          <Text style={[styles.warmUpProperlyContainer, styles.minutesClr]}>
-            {`Warm up properly before exercising to prevent `}injury and make
-            your workouts more effective.
-          </Text>
-        </View>
+      <View style={{backgroundColor:'#fff'}}>
+      <Text style={[styles.exercises, styles.warmUpFlexBox]}>Exercises</Text>
+      <View style={{
+        top: 60,
+
+        right: 16,
+        position: "absolute"
+      }}>
+
+        <DropdownFilter handleFilter={handleFilter} selectedOption={selectedOption} />
+
+      </View>
         <Text style={[styles.exercises, styles.warmUpFlexBox]}>Exercises</Text>
 
         <View style={styles.container}>
