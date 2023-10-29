@@ -53,10 +53,10 @@ const ExercisePage = ({ route }: any) => {
     setSelectedOption(option);
     if (option === 'All') {
       // If 'All' is selected, show all exercises
-      setexerciseData(exerciseData);
+      setexerciseData(main);
     } else {
       // Filter exercises based on the selected option
-      const filteredExercises = exerciseData.filter((exercise: { equipment: string; }) => exercise.equipment === option);
+      const filteredExercises = main.filter((exercise: { equipment: string; }) => exercise.equipment === option);
       setexerciseData(filteredExercises);
     }
   };
@@ -101,6 +101,7 @@ const ExercisePage = ({ route }: any) => {
     );
     setexerciseData(filteredData);
   };
+  
   return (
     <LinearGradient
       style={styles.exercisePage}
@@ -141,7 +142,7 @@ const ExercisePage = ({ route }: any) => {
       </View>
     </View>
 
-    </LinearGradient >
+    </LinearGradient>
   );
 };
 

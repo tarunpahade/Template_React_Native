@@ -21,14 +21,18 @@ const WorkoutRoutinePopup = ({
 }: any) => {
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [createNewRoutine, setCreateNewRoutine] = useState(false);
-const [loading,setloading]= useState(true);
-const [noRoutineAdded,setnoRoutineAdded]= useState(false);
+  const [loading, setloading] = useState(true);
+  const [noRoutineAdded, setnoRoutineAdded] = useState(false);
 
-
-const profileData = useSelector((state:any) => state.account);
-const email=  profileData.account.email
-  const { data:rotieneDataFeatched, isLoading, error } = useGetRoutineDetailsQuery(email)
-const [rotieneData,setRouteneData]=useState(rotieneDataFeatched)
+  const profileData = useSelector((state: any) => state.account);
+  const email = profileData.account.email
+  const { data: rotieneDataFeatched, isLoading, error } = useGetRoutineDetailsQuery(email)
+  const [rotieneData, setRouteneData] = useState(rotieneDataFeatched)
+if(isLoading){
+  return (
+    <ActivityIndicator />
+  )
+}
   const handleCheckboxChange = (routineIndex: number) => {
     setRouteneData((prevData: any) => {
       const updatedRoutines = [...prevData];
@@ -66,36 +70,36 @@ const [rotieneData,setRouteneData]=useState(rotieneDataFeatched)
           <Text style={{ padding: 5, paddingLeft: 0 }}>
             Select Workout Routine
           </Text>
-  {noRoutineAdded && (<Text>No Routine Added</Text>)
+          {noRoutineAdded && (<Text>No Routine Added</Text>)
 
-  }
+          }
 
-{isLoading ? <ActivityIndicator /> : (
-  <View style={{height:'55%'}}>
-{createNewRoutine ? (
-  <View >
-    <TextInput
-      placeholder="Add Title"
-      value={newRoutineTitle}
-      style={{ marginTop: 5 }}
-      onChangeText={(text) => setNewRoutineTitle(text)}
-    />
-  </View>
-) : (
-  <View style={{ height: "65%" }}>
-    <RoutineList
-      routines={rotieneData}
-      setInitialChecked={handleCheckboxChange}
-    />
-  </View>
+          {isLoading ? <ActivityIndicator /> : (
+            <View style={{ height: '55%' }}>
+              {createNewRoutine ? (
+                <View >
+                  <TextInput
+                    placeholder="Add Title"
+                    value={newRoutineTitle}
+                    style={{ marginTop: 5 }}
+                    onChangeText={(text) => setNewRoutineTitle(text)}
+                  />
+                </View>
+              ) : (
+                <View style={{ height: "65%" }}>
+                  <RoutineList
+                    routines={rotieneData}
+                    setInitialChecked={handleCheckboxChange}
+                  />
+                </View>
 
-)}
-  </View>
+              )}
+            </View>
 
-)
+          )
 
-}
-        
+          }
+
 
           <View
             style={{
@@ -124,13 +128,13 @@ const [rotieneData,setRouteneData]=useState(rotieneDataFeatched)
             >
               <Text style={{ color: "#333" }}>Cancel</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={{
                 borderColor: "#eee",
                 borderWidth: 1,
                 marginLeft: 5,
-                
+
                 //   flex: 2, // 40% width for the "Create Routine" button
                 paddingVertical: 10, // Adding padding to vertically center the text
                 paddingHorizontal: 8,
@@ -155,9 +159,9 @@ const [rotieneData,setRouteneData]=useState(rotieneDataFeatched)
               }}
             >
               {rotieneData.filter((x: { checked: boolean; }) => x.checked === true).length === 0 ? (
-                <Text style={{color:'#fff'}}>Create Routine</Text>
+                <Text style={{ color: '#fff' }}>Create Routine</Text>
               ) : (
-                <Text style={{color:'#fff'}}>Add To Routine</Text>
+                <Text style={{ color: '#fff' }}>Add To Routine</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -221,7 +225,7 @@ const RoutineList: React.FC<RoutineListProps> = ({
               style={{
                 marginLeft: 10,
                 fontSize: 15,
-                marginVertical:0,
+                marginVertical: 0,
                 fontWeight: "bold",
                 color: "#333",
               }}
@@ -229,7 +233,7 @@ const RoutineList: React.FC<RoutineListProps> = ({
               {item.name}
             </Text>
             <CheckBox
-            
+
               checked={item.checked}
               onPress={() => setInitialChecked(index)}
             />

@@ -114,7 +114,7 @@ export const SingleWorkout = ({ route }: any) => {
         source={require("../../assets/menu1.png")}
       />
       <View style={[styles.content, styles.contentPosition]}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => setIsPopupVisible(true)}
           style={[styles.statusDuration, styles.statusFlexBox]}
         >
@@ -124,7 +124,7 @@ export const SingleWorkout = ({ route }: any) => {
             source={require("../../assets/icon--running.png")}
           />
           <Text style={[styles.running, styles.minsTypo]}>Add To Routine</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Render the popup component when isPopupVisible is true */}
         {isPopupVisible && (
@@ -138,7 +138,7 @@ export const SingleWorkout = ({ route }: any) => {
 
         <View style={[styles.statusDuration1, styles.statusFlexBox]}>
         
-          <Text style={[styles.mins, styles.minsTypo]}>target muscle: {workout.data.target}</Text>
+          <Text style={[ styles.warmUpProperlyContainer,{marginTop:0}]}>target muscle: {workout.data.target}</Text>
         </View>
         <View style={[styles.dragOverlayPrototyping, styles.statusFlexBox]}>
           <View style={styles.dragOverlayPrototypingChild} />
@@ -197,8 +197,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   minutesClr: {
-    color: Color.colorSilver,
+    color: '#222',
     textAlign: "left",
+    width: "80%",
   },
   menuIcon1Layout: {
     width: 374,
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
   },
   statusDuration: {
     left: 163,
-    backgroundColor: Color.colorAntiquewhite_200,
+    backgroundColor: Color.colorGray,
     paddingVertical: Padding.p_5xs,
     paddingHorizontal: Padding.p_base,
     flexDirection: "row",
@@ -264,10 +265,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mins: {
-    color: Color.colorDeepskyblue,
+    color: '#222222',
   },
   statusDuration1: {
-    backgroundColor: Color.colorAliceblue,
+    borderColor: '#000',
+    borderWidth:1,
     left: 12,
     paddingVertical: Padding.p_5xs,
     paddingHorizontal: Padding.p_base,
@@ -297,7 +299,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     marginTop: 10,
     fontSize: FontSize.size_smi,
-    width: "80%",
+    
   },
   tagline: {
     top: 32,
@@ -402,7 +404,7 @@ const styles = StyleSheet.create({
     top: "62%",
     borderTopLeftRadius: Border.br_mini,
     borderTopRightRadius: Border.br_mini,
-    backgroundColor: "#fff",
+    backgroundColor: "#1111",
     width: "100%",
     height: "100%",
   },

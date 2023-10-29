@@ -20,9 +20,9 @@ export const SignupScreen = ({ navigation }: any) => {
     const result: any = await newAccount({ email, password, otp , idVerified: false});
     console.log(result, "this is result");
     if (result.data.status === "Ok") {
-      alert("Account Created successfully");
+      //alert("Account Created successfully");
       setAccount({ email, password });
-      navigation.navigate("Verification", { otp: otp });
+      navigation.navigate("Home");
     }
   };
 

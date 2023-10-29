@@ -8,6 +8,7 @@ import {
   FlatList,
   Modal,
   ActivityIndicator,
+  Dimensions
 } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
@@ -18,10 +19,20 @@ import ExerciseTitle from "../components/exercise/ExerciseCard";
 import { LinearGradient } from "expo-linear-gradient";
 import { useGetRoutineDetailsQuery } from "../store/apiSlicer";
 import { useSelector } from "react-redux";
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+
+
 interface ListProps {
   title: string;
   key: string;
   day: string;
+}
+interface YourCarouselComponentProps {
+  rotieneData: any; // Define the type for rotieneData
+  renderItem: any; // Define the type for renderItem
+}
+interface RenderItemProps {
+  item: any; // Define the type for item
 }
 const Homepage = () => {
   const navigation: any = useNavigation();
@@ -32,7 +43,7 @@ const Homepage = () => {
 const email=  profileData.account.email
 console.log(email);
 
-  const { data:rotieneData, isLoading, error,refetch } = useGetRoutineDetailsQuery(email)
+  const { data:rotieneData, isLoading, error,refetch } = useGetRoutineDetailsQuery('Tarunpahade6969@gmail.com')
   
 console.log(rotieneData);
 
@@ -45,14 +56,59 @@ console.log(rotieneData);
     setShowRoutine(true)
   }
   
+  const windowWidth = Dimensions.get('window').width;
+  const itemWidth = Dimensions.get('window').width - 70; // Adjust the item width according to your design.
+  
+  const YourCarouselComponent: React.FC<YourCarouselComponentProps>  = ({ rotieneData, renderItem }:any) => {
+    const [activeSlide, setActiveSlide] = useState(0);
+    return (
+      <View style={{marginTop:5}}>
+        <Carousel
+          data={rotieneData.data}
+          renderItem={renderItem}
+          sliderWidth={windowWidth}
+          layout="default"
+          layoutCardOffset={2}
+          itemWidth={itemWidth}
+          keyExtractor={(item:any, index:number) => index.toString()}
+          onSnapToItem={(index) => setActiveSlide(index)}
+        />
+      <Pagination
+      
+  dotsLength={rotieneData.data.length}
+  activeDotIndex={activeSlide}
+  dotStyle={{
+    width: 7,
+    height: 7,
+    borderRadius: 5,
+    marginHorizontal: 4,
+    backgroundColor: 'black', // Change the active dot color to black
+  }}
+  inactiveDotStyle={{
+    width: 5,
+    height: 5,
+    borderRadius: 5,
+    marginHorizontal: 4,
+    backgroundColor: 'grey', // Change the inactive dot color to grey
+  }}
+  containerStyle={{paddingTop:0,marginVertical:8}}
+  inactiveDotOpacity={0.4}
+  inactiveDotScale={0.6}
+/>
 
-  const renderItem = ({ item }: any) => (
+      </View>
+    );
+  };
+  
+  
+  const renderItem: React.FC<RenderItemProps> = ({ item }: any) => (
     <TouchableOpacity
       style={[
         styles.searchBarLayout,
         {
           height: 160,
-          marginBottom: 10,
+marginLeft:-26,
+marginRight:10,
           backgroundColor: Color.colorAliceblue_100,
         },
       ]}
@@ -126,12 +182,8 @@ console.log(rotieneData);
 <ActivityIndicator />
   ) : (
 
-    <FlatList
-    data={rotieneData.data}
-    
-    renderItem={renderItem}
-    keyExtractor={(item, index) => index.toString()}
-  />
+<YourCarouselComponent rotieneData={rotieneData} renderItem={renderItem} />
+
   )
 }
       </View>
